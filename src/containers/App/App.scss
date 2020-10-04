@@ -1,0 +1,14 @@
+@import "../../assets/sass/main";
+
+.container {
+    min-height: 100vh;
+
+    display: grid;
+    // grid-template-columns:
+    //     [full-start] minmax(6rem, 1fr) [center-start] repeat(
+    //         8,
+    //         [col-start] minmax(min-content, 1fr) [col-end]
+    //     )
+    //     [center-end] minmax(6rem, 1fr) [full-end];
+    grid-template-rows: max-content 1fr max-content;
+}

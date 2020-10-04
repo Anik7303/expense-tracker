@@ -1,0 +1,11 @@
+@import "../../assets/sass/main";
+
+.footer {
+    // grid-column: full-start / full-end;
+    grid-row: -2 / -1;
+    background-image: linear-gradient(to right, $color-primary 40%, $color-secondary 60%);
+    background-color: $color-primary;
+
+    font-size: 1.4rem;
+    color: $color-white;
+}

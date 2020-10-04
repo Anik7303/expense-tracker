@@ -1,0 +1,12 @@
+%heading {
+    font-family: "Roboto";
+}
+
+.heading {
+    &-2 {
+        @extend %heading;
+        font-size: 2.5rem;
+        text-transform: uppercase;
+        line-height: 1;
+    }
+}

@@ -1,0 +1,8 @@
+// Media Query Mixin
+@mixin respond($breakpoint) {
+    @if ($breakpoint == largest) {
+        @media only screen and (min-width: $bp-largest) {
+            @content;
+        }
+    }
+}

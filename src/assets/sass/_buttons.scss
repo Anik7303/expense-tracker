@@ -1,0 +1,27 @@
+.btn {
+    border: 2px solid transparent;
+    border-radius: 20px;
+    font-size: inherit;
+    font-family: inherit;
+    padding: 0.8rem 1.6rem;
+    background-color: $color-primary;
+    color: $color-white;
+    cursor: pointer;
+
+    &:hover {
+        box-shadow: 0 2rem 4rem rgba($color-black, 0.2);
+        transform: translateY(-3px);
+        border-color: $color-primary;
+        background-color: $color-white;
+        color: $color-primary;
+    }
+
+    &:active {
+        box-shadow: 0 0.5rem 1rem rgba($color-black, 0.2);
+        transform: translateY(-1px);
+    }
+
+    &:focus {
+        outline: none;
+    }
+}
