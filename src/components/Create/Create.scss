@@ -1,0 +1,60 @@
+.section-create {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form {
+    max-width: 60rem;
+    width: 80%;
+    padding: 3rem;
+    padding-bottom: 2rem;
+    margin-top: 3rem;
+    box-shadow: 0 1rem 4rem var(--shadow-secondary);
+    background-color: var(--color-secondary-light);
+    border-radius: 0.8rem;
+
+    &__group {
+        width: 100%;
+        padding: 0.5rem 1rem;
+
+        &:not(:last-child) {
+            margin-bottom: 1rem;
+        }
+    }
+
+    &__input {
+        display: block;
+        width: 100%;
+        padding: 0.8rem 1.6rem;
+        font-size: inherit;
+        font-family: inherit;
+        color: inherit;
+        background-color: var(--color-white);
+        border: 3px solid transparent;
+        border-radius: 4px;
+
+        &:focus {
+            outline: none;
+            border-bottom: 3px solid var(--color-primary);
+        }
+
+        &:invalid,
+        .invalid {
+            color: var(--color-red);
+            border-color: var(--color-red);
+        }
+    }
+
+    &__label {
+        font-size: 1.4rem;
+    }
+
+    &__btn {
+        width: 100%;
+        margin: 0;
+        text-transform: uppercase;
+        color: var(--color-white);
+        background-color: var(--color-primary);
+    }
+}
