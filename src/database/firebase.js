@@ -27,6 +27,20 @@ class Firebase {
         this.auth.signInWithEmailAndPassword(email, password);
 
     signOut = () => this.auth.signOut();
+
+    updateProfile = (data) => this.auth.currentUser.updateProfile(data);
+
+    addEntry = (data, name = "default") => {
+        // return this.database.ref().child("collections").child("default").push().set(data);
+        const uid = this.auth.currentUser?.uid;
+        return this.database
+            .ref()
+            .child("collections")
+            .child(uid)
+            .child("default")
+            .push()
+            .set(data);
+    };
 }
 
 export default Firebase;

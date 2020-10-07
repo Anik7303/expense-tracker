@@ -8,6 +8,8 @@ import "./App.scss";
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
 import Create from "../Create/Create";
+import Login from "../Login/Login";
+import Signup from "../Signup/Signup";
 
 function App() {
     return (
@@ -17,6 +19,8 @@ function App() {
                 <main>
                     <Switch>
                         <Route exact path={"/new"} component={Create} />
+                        <Route exact path={"/login"} component={Login} />
+                        <Route exact path={"/signup"} component={Signup} />
                     </Switch>
                 </main>
                 <Footer />

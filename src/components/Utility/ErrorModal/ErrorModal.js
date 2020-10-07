@@ -18,7 +18,7 @@ function ErrorModal(props) {
             <div className="modal-error">
                 <div className="modal__header">
                     <h4 className="heading-4 heading--modal">
-                        <span class="modal__icon">
+                        <span className="modal__icon">
                             <MakeIcon icon={ErrorOutlineRounded} />
                         </span>
                         <span>Error</span>

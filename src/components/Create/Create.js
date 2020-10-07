@@ -1,21 +1,52 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Stylesheet
 import "./Create.scss";
 
 // Components
 import ErrorModal from "../Utility/ErrorModal/ErrorModal";
+import { withFirebase } from "../../database/index";
+
+// Helper functions
+import { getCurrentDate as currentDate } from "../Utility/utility";
+
+const ENTRY_TYPE = {
+    INCOME: "income",
+    EXPENSE: "expense",
+};
 
 function Create(props) {
-    const [entryType, setEntryType] = useState("entry");
+    console.log({ ...props });
+
+    const [date, setDate] = useState("");
+    const [entryType, setEntryType] = useState(ENTRY_TYPE.INCOME);
     const [title, setTitle] = useState("");
     const [amount, setAmount] = useState("");
     const [error, setError] = useState(null);
 
+    let invalid = title === "" || amount === "";
+
+    useEffect(() => {
+        setDate(currentDate());
+    }, []);
+
+    const resetStates = () => {
+        setDate(currentDate());
+        setEntryType(ENTRY_TYPE.INCOME);
+        setTitle("");
+        setAmount("");
+    };
     const submitHandler = (event) => {
         event.preventDefault();
-        const target = event.target;
-        console.log({ target, entryType, title, amount, error });
+        console.log({ entryType, date, title, amount, error });
+        const { firebase } = props;
+        const data = { type: entryType, title, amount, date };
+        firebase
+            .addEntry(data)
+            .then(() => {
+                resetStates();
+            })
+            .catch((error) => setError(error));
     };
     const closeModal = () => {
         setError(null);
@@ -25,6 +56,9 @@ function Create(props) {
         switch (name) {
             case "entryType":
                 setEntryType(value);
+                break;
+            case "date":
+                setDate(value);
                 break;
             case "title":
                 setTitle(value);
@@ -42,6 +76,20 @@ function Create(props) {
             <ErrorModal data={error} closeFn={closeModal} />
             <form className="form" onSubmit={submitHandler} autoComplete="off">
                 <div className="form__group">
+                    <input
+                        className="form__input"
+                        type="date"
+                        name="date"
+                        id="date"
+                        placeholder="Date"
+                        value={date}
+                        onChange={inputChangeHandler}
+                    />
+                    <label className="form__label" htmlFor="date">
+                        Date
+                    </label>
+                </div>
+                <div className="form__group">
                     <select
                         className="form__input"
                         name="entryType"
@@ -49,9 +97,12 @@ function Create(props) {
                         value={entryType}
                         onChange={inputChangeHandler}
                     >
-                        <option value="entry">Entry</option>
-                        <option value="collection">Collection</option>
+                        <option value={ENTRY_TYPE.INCOME}>{ENTRY_TYPE.INCOME}</option>
+                        <option value={ENTRY_TYPE.EXPENSE}>{ENTRY_TYPE.EXPENSE}</option>
                     </select>
+                    <label className="form__label" htmlFor="entryType">
+                        Type
+                    </label>
                 </div>
                 <div className="form__group">
                     <input
@@ -63,9 +114,9 @@ function Create(props) {
                         value={title}
                         onChange={inputChangeHandler}
                     />
-                    {/* <label className="form__label" htmlFor="title">
+                    <label className="form__label" htmlFor="title">
                         Title
-                    </label> */}
+                    </label>
                 </div>
                 <div className="form__group">
                     <input
@@ -74,16 +125,22 @@ function Create(props) {
                         name="amount"
                         id="amount"
                         placeholder="Amount"
+                        step="0.1"
                         value={amount}
                         onChange={inputChangeHandler}
                     />
+                    <label className="form__label" htmlFor="amount">
+                        Amount
+                    </label>
                 </div>
                 <div className="form__group">
-                    <button className="btn form__btn">Add</button>
+                    <button disabled={invalid} className="btn btn__form">
+                        Add
+                    </button>
                 </div>
             </form>
         </section>
     );
 }
 
-export default Create;
+export default withFirebase(Create);

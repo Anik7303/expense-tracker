@@ -17,6 +17,8 @@ function Navigation() {
             <ul className="nav__list">
                 <NavigationItem text="New" url="/new" leftIcon={<MakeIcon icon={AddIcon} />} />
                 <NavigationItem text="Home" url="/" />
+                <NavigationItem text="Login" url="/login" />
+                <NavigationItem text="Sign Up" url="/signup" />
                 <NavigationItem text="" url="/profile" leftIcon={<MakeIcon icon={Avatar} />}>
                     <ul className="dropdown">
                         <li className="dropdown__item">Profile</li>
