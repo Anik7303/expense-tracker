@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 
 // Stylesheet
 import "./Navigation.scss";
@@ -6,29 +6,39 @@ import "./Navigation.scss";
 // Components
 import NavigationItem from "./NavigationItem/NavigationItem.js";
 import MakeIcon from "../Utility/MakeIcon/MakeIcon";
+import DropdownMenu from './Dropdown/Dropdown';
+import { withFirebase } from '../../database/index';
 
 // Material-UI Icons
-import { Add as AddIcon, ExpandMore as ExpandMoreIcon } from "@material-ui/icons";
+import { Add as AddIcon } from "@material-ui/icons";
 import { Avatar } from "@material-ui/core";
 
-function Navigation() {
-    return (
-        <nav className="nav">
-            <ul className="nav__list">
-                <NavigationItem text="New" url="/new" leftIcon={<MakeIcon icon={AddIcon} />} />
+function Navigation({firebase}) {
+    const unprotectedRoutes = (
+        <Fragment>
                 <NavigationItem text="Home" url="/" />
                 <NavigationItem text="Login" url="/login" />
                 <NavigationItem text="Sign Up" url="/signup" />
-                <NavigationItem text="" url="/profile" leftIcon={<MakeIcon icon={Avatar} />}>
-                    <ul className="dropdown">
-                        <li className="dropdown__item">Profile</li>
-                        <li className="dropdown__item">Dashboard</li>
-                        <li className="dropdown__item">Sign Out</li>
-                    </ul>
-                </NavigationItem>
+        </Fragment>
+    );
+    const protectedRoutes = (
+        <Fragment>
+            <NavigationItem text="New" url="/new" icon={<MakeIcon icon={AddIcon} />} />
+                <NavigationItem text="Home" url="/" />
+                <DropdownMenu text={null} icon={<MakeIcon icon={Avatar} />}>
+                    <NavigationItem text="Profile" url="/profile" icon={<MakeIcon icon={AddIcon} />} />
+                    <NavigationItem text="Dashboard" url="/dashboard" icon={<MakeIcon icon={AddIcon} />} />
+                    <NavigationItem text="Sign Out" url="/signout" icon={<MakeIcon icon={AddIcon} />} />
+                </DropdownMenu>
+        </Fragment>
+    );
+    return (
+        <nav className="nav">
+            <ul className="nav__list">
+                { firebase.isAuthenticated() ? protectedRoutes : unprotectedRoutes }
             </ul>
         </nav>
     );
 }
 
-export default Navigation;
+export default withFirebase(Navigation);

@@ -1,5 +1,5 @@
-import React from "react";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import React, { useState, Fragment } from "react";
+import { Switch, Route, withRouter } from "react-router-dom";
 
 // Stylesheet
 import "./App.scss";
@@ -10,23 +10,49 @@ import Footer from "../Footer/Footer";
 import Create from "../Create/Create";
 import Login from "../Login/Login";
 import Signup from "../Signup/Signup";
+import Home from '../Home/Home';
+import { withFirebase } from '../../database/index';
+import ErrorModal from '../Utility/ErrorModal/ErrorModal';
 
-function App() {
+function App(props) {
+    console.log({...props});
+    const [error, setError] = useState(null);
+    const { firebase } = props;
+    console.log(firebase.isAuthenticated());
+
+    const signOutHandler = () => {
+        firebase.signOut().then(() => {
+            props.history.push('/');
+        }).catch(error => setError(error));
+    }
+
+    const unprotectedRoutes = (
+        <Fragment>
+            <Route exact path={'/'} component={Home} />
+            <Route exact path={"/login"} component={Login} />
+            <Route exact path={"/signup"} component={Signup} />
+        </Fragment>
+    );
+    const protectedRoutes = (
+        <Fragment>
+            <Route exact path={"/new"} component={Create} />
+            <Route exact path={'/'} component={Home} />
+            <Route exact path={"/signout"} render={() => signOutHandler()} />
+        </Fragment>
+    );
+
     return (
-        <Router>
             <div className="container">
+                {error && <ErrorModal data={error} closeModal={() => setError(null)} />}
                 <Header />
                 <main>
                     <Switch>
-                        <Route exact path={"/new"} component={Create} />
-                        <Route exact path={"/login"} component={Login} />
-                        <Route exact path={"/signup"} component={Signup} />
+                        { firebase.isAuthenticated() ? protectedRoutes : unprotectedRoutes }
                     </Switch>
                 </main>
                 <Footer />
             </div>
-        </Router>
     );
 }
 
-export default App;
+export default withRouter(withFirebase(App));

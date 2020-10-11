@@ -1,5 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import {BrowserRouter as Router} from 'react-router-dom';
 
 // Stylesheet
 import "./index.css";
@@ -12,7 +13,9 @@ import Firebase, { FirebaseContext } from "./database/index";
 const element = (
     <React.StrictMode>
         <FirebaseContext.Provider value={new Firebase()}>
-            <App />
+            <Router basename="/">
+                <App />
+            </Router>
         </FirebaseContext.Provider>
     </React.StrictMode>
 );

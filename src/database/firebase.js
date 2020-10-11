@@ -20,6 +20,8 @@ class Firebase {
         this.database = app.database();
     }
 
+    isAuthenticated = () => this.auth.currentUser !== null;
+
     createUserWithEmailAndPassword = (email, password) =>
         this.auth.createUserWithEmailAndPassword(email, password);
 
@@ -31,7 +33,6 @@ class Firebase {
     updateProfile = (data) => this.auth.currentUser.updateProfile(data);
 
     addEntry = (data, name = "default") => {
-        // return this.database.ref().child("collections").child("default").push().set(data);
         const uid = this.auth.currentUser?.uid;
         return this.database
             .ref()

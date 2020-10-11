@@ -1,10 +1,4 @@
 .nav {
-    &__item:last-child &__link .dropdown {
-        left: auto;
-        right: 0;
-        transform: translateX(0);
-    }
-
     &__link {
         &:link,
         &:visited {
@@ -26,34 +20,6 @@
         &:hover,
         &:active {
             color: var(--color-secondary-light);
-        }
-
-        &:hover .dropdown {
-            visibility: visible;
-            opacity: 1;
-        }
-
-        .dropdown {
-            list-style: none;
-            position: absolute;
-            top: 100%;
-            left: 50%;
-            transform: translateX(-50%);
-            padding: 1rem;
-            color: var(--color-white);
-            background-color: var(--color-secondary);
-            box-shadow: 0 1rem 2rem var(--shadow-secondary);
-            visibility: hidden;
-            opacity: 0;
-            transition: all 0.3s ease;
-
-            &__item {
-                padding: 0.8rem 1.6rem;
-
-                &:not(:last-child) {
-                    border-bottom: 1px solid var(--color-secondary-light);
-                }
-            }
         }
     }
 

@@ -122,8 +122,8 @@
     }
 
     &:disabled {
-        color: var(--color-grey-dark);
-        background-color: var(--color-grey);
+        // color: var(--color-grey-dark);
+        // background-color: var(--color-grey);
         cursor: not-allowed;
     }
 
