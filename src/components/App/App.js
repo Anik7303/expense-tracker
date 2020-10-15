@@ -1,4 +1,4 @@
-import React, { useState, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { Switch, Route, withRouter } from "react-router-dom";
 
 // Stylesheet
@@ -7,7 +7,7 @@ import "./App.scss";
 // Components
 import Header from "../Header/Header";
 import Footer from "../Footer/Footer";
-import Create from "../Create/Create";
+import { Entry, Collection } from "../Create/Create";
 import Login from "../Login/Login";
 import Signup from "../Signup/Signup";
 import Home from '../Home/Home';
@@ -18,7 +18,6 @@ function App(props) {
     console.log({...props});
     const [error, setError] = useState(null);
     const { firebase } = props;
-    console.log(firebase.isAuthenticated());
 
     const signOutHandler = () => {
         firebase.signOut().then(() => {
@@ -26,28 +25,17 @@ function App(props) {
         }).catch(error => setError(error));
     }
 
-    const unprotectedRoutes = (
-        <Fragment>
-            <Route exact path={'/'} component={Home} />
-            <Route exact path={"/login"} component={Login} />
-            <Route exact path={"/signup"} component={Signup} />
-        </Fragment>
-    );
-    const protectedRoutes = (
-        <Fragment>
-            <Route exact path={"/new"} component={Create} />
-            <Route exact path={'/'} component={Home} />
-            <Route exact path={"/signout"} render={() => signOutHandler()} />
-        </Fragment>
-    );
-
     return (
             <div className="container">
                 {error && <ErrorModal data={error} closeModal={() => setError(null)} />}
                 <Header />
                 <main>
                     <Switch>
-                        { firebase.isAuthenticated() ? protectedRoutes : unprotectedRoutes }
+                        <Route exact path={'/'} component={Home} />
+                        <Route exact path={"/entry/new"} component={Entry} />
+                        <Route exact path={"/login"} component={Login} />
+                        <Route exact path={"/signup"} component={Signup} />
+                        <Route exact path={"/signout"} render={() => signOutHandler()} />
                     </Switch>
                 </main>
                 <Footer />

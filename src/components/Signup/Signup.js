@@ -8,8 +8,6 @@ import ErrorModal from "../Utility/ErrorModal/ErrorModal";
 import { withFirebase } from "../../database/index";
 
 function Signup(props) {
-    console.log({ ...props });
-
     const [error, setError] = useState(null);
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
@@ -45,6 +43,10 @@ function Signup(props) {
         const { firebase } = props;
         firebase
             .createUserWithEmailAndPassword(email, password)
+            .then(result => {
+                const { uid } = result.user;
+                return firebase.setUserInfo(uid, username, email);
+            })
             .then(() => {
                 return firebase.updateProfile({ displayName: username });
             })

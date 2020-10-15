@@ -16,20 +16,23 @@ import { Avatar } from "@material-ui/core";
 function Navigation({firebase}) {
     const unprotectedRoutes = (
         <Fragment>
-                <NavigationItem text="Home" url="/" />
-                <NavigationItem text="Login" url="/login" />
-                <NavigationItem text="Sign Up" url="/signup" />
+            <NavigationItem text="Home" url="/" />
+            <NavigationItem text="Login" url="/login" />
+            <NavigationItem text="Sign Up" url="/signup" />
         </Fragment>
     );
     const protectedRoutes = (
         <Fragment>
-            <NavigationItem text="New" url="/new" icon={<MakeIcon icon={AddIcon} />} />
-                <NavigationItem text="Home" url="/" />
-                <DropdownMenu text={null} icon={<MakeIcon icon={Avatar} />}>
-                    <NavigationItem text="Profile" url="/profile" icon={<MakeIcon icon={AddIcon} />} />
-                    <NavigationItem text="Dashboard" url="/dashboard" icon={<MakeIcon icon={AddIcon} />} />
-                    <NavigationItem text="Sign Out" url="/signout" icon={<MakeIcon icon={AddIcon} />} />
-                </DropdownMenu>
+            <DropdownMenu text="New" icon={<MakeIcon icon={AddIcon} />}>
+                <NavigationItem text="Entry" url="/entry/new" />
+                <NavigationItem text="Collection" url="/collection/new" />
+            </DropdownMenu>
+            <NavigationItem text="Home" url="/" />
+            <DropdownMenu text={null} icon={<MakeIcon icon={Avatar} />}>
+                <NavigationItem text="Profile" url="/profile" icon={<MakeIcon icon={AddIcon} />} />
+                <NavigationItem text="Dashboard" url="/dashboard" icon={<MakeIcon icon={AddIcon} />} />
+                <NavigationItem text="Sign Out" url="/signout" icon={<MakeIcon icon={AddIcon} />} />
+            </DropdownMenu>
         </Fragment>
     );
     return (
