@@ -11,3 +11,12 @@ export const getCurrentDate = () => {
 
     return formatDate(x.getDate(), x.getMonth(), x.getFullYear());
 };
+
+export const toList = (obj) => {
+    return Object.keys(obj).map(key => {
+        return {
+            key: key,
+            value: obj[key],
+        };
+    });
+}

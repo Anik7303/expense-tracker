@@ -41,14 +41,18 @@ function Signup(props) {
         event.preventDefault();
 
         const { firebase } = props;
+        let userId = null;
         firebase
             .createUserWithEmailAndPassword(email, password)
             .then(result => {
-                const { uid } = result.user;
-                return firebase.setUserInfo(uid, username, email);
+                userId = result.user.uid;
+                return firebase.setUserInfo(userId, username, email);
             })
             .then(() => {
                 return firebase.updateProfile({ displayName: username });
+            })
+            .then(() => {
+                return firebase.addCollection();
             })
             .then(() => {
                 props.history.push("/");

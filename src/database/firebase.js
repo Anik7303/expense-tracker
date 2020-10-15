@@ -75,6 +75,17 @@ class Firebase {
             .push()
             .set(data);
     };
+
+    collections = () => {
+        const uid = this.getUid();
+        console.log({uid});
+        return this.ref.child(databaseKeys.COLLECTIONS).child(uid);
+    }
+
+    collectionList = () => {
+        const uid = this.getUid();
+        return this.ref.child(databaseKeys.USERS).child(uid).child(databaseKeys.COLLECTIONS);
+    }
 }
 
 export default Firebase;
