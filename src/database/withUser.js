@@ -1,14 +1,14 @@
-import React from 'react';
+import React from "react";
 
 // Components
-import { AuthContext } from '../database/index';
+import { AuthContext } from "../database/index";
 
-const withUser = (Component) => props => {
+const withUser = (Component) => (props) => {
     return (
         <AuthContext.Consumer>
-            { user => <Component {...props} user={user} isAuth={user !== null} />}
+            {(user) => <Component {...props} user={user} isAuth={user !== null} />}
         </AuthContext.Consumer>
     );
-}
+};
 
 export default withUser;

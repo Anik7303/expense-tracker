@@ -26,12 +26,7 @@ const withAuthentication = (Component) => {
             this.listener();
         }
 
-        signOutHandler = () => {
-            this.firebase.signOut();
-        };
-
         render() {
-            console.log({ ...this.props });
             return (
                 <AuthContext.Provider value={this.state.user}>
                     <Component {...this.props} isAuth={this.state.user !== null} />

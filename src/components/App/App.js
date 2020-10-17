@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Switch, Route, withRouter, Redirect, Link } from "react-router-dom";
+import { Switch, Route, Redirect, withRouter } from "react-router-dom";
 import { compose } from "recompose";
 
 // Stylesheet
@@ -21,15 +21,6 @@ function App(props) {
     const [error, setError] = useState(null);
     const { firebase, isAuth } = props;
 
-    const signOutHandler = () => {
-        firebase
-            .signOut()
-            .then(() => {
-                props.history.push("/");
-            })
-            .catch((error) => setError(error));
-    };
-
     const reqAuth = (
         <Switch>
             <Route exact path="/" component={Home} />
@@ -40,7 +31,6 @@ function App(props) {
             <Redirect to="/" />
         </Switch>
     );
-
     const noReqAuth = (
         <Switch>
             <Route exact path="/" component={Home} />
@@ -49,6 +39,15 @@ function App(props) {
             <Redirect to="/" />
         </Switch>
     );
+
+    const signOutHandler = () => {
+        firebase
+            .signOut()
+            .then(() => {
+                props.history.push("/");
+            })
+            .catch((error) => setError(error));
+    };
 
     return (
         <div className="container">

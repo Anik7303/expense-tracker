@@ -14,9 +14,9 @@ const config = {
 };
 
 const databaseKeys = {
-    DEFAULT: 'default',
-    USERS: 'users',
-    COLLECTIONS: 'collections',
+    DEFAULT: "default",
+    USERS: "users",
+    COLLECTIONS: "collections",
 };
 
 class Firebase {
@@ -42,29 +42,30 @@ class Firebase {
     updateProfile = (data) => this.auth.currentUser.updateProfile(data);
 
     setUserInfo = (uid, username, email) => {
-        return this.ref
-            .child('users')
-            .child(uid)
-            .set({
-                username: username,
-                email: email,
-                createdAt: new Date().getTime(),
-            });
-    }
+        return this.ref.child("users").child(uid).set({
+            username: username,
+            email: email,
+            createdAt: new Date().getTime(),
+        });
+    };
 
     addCollection = (name = databaseKeys.DEFAULT) => {
         const uid = this.getUid();
-        const key = this.ref.child(databaseKeys.USERS).child(uid).child(databaseKeys.COLLECTIONS).push().key;
+        const key = this.ref
+            .child(databaseKeys.USERS)
+            .child(uid)
+            .child(databaseKeys.COLLECTIONS)
+            .push().key;
         const updates = {};
 
         updates[`/${databaseKeys.USERS}/${uid}/${databaseKeys.COLLECTIONS}/${key}/`] = name;
-        
-        if(name === databaseKeys.DEFAULT) {
+
+        if (name === databaseKeys.DEFAULT) {
             updates[`/${databaseKeys.USERS}/${uid}/default/`] = key;
         }
 
         return this.ref.update(updates);
-    }
+    };
 
     addEntry = (data, collection) => {
         const uid = this.getUid();
@@ -76,16 +77,20 @@ class Firebase {
             .set(data);
     };
 
+    collection = (id) => {
+        const uid = this.getUid();
+        return this.ref.child(databaseKeys.COLLECTIONS).child(uid).child(id);
+    };
+
     collections = () => {
         const uid = this.getUid();
-        console.log({uid});
         return this.ref.child(databaseKeys.COLLECTIONS).child(uid);
-    }
+    };
 
     collectionList = () => {
         const uid = this.getUid();
         return this.ref.child(databaseKeys.USERS).child(uid).child(databaseKeys.COLLECTIONS);
-    }
+    };
 }
 
 export default Firebase;
