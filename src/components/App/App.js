@@ -53,7 +53,7 @@ function App(props) {
         <div className="container">
             {error && <ErrorModal data={error} closeModal={() => setError(null)} />}
             <Header />
-            <main>{isAuth ? reqAuth : noReqAuth}</main>
+            <main className="section-main">{isAuth ? reqAuth : noReqAuth}</main>
             <Footer />
         </div>
     );

@@ -5,13 +5,11 @@ import ErrorModal from "../../Utility/ErrorModal/ErrorModal";
 import { withFirebase } from "../../../database/index";
 import { toList, toCapitalize } from "../../Utility/utility";
 
+// Keys
+import * as ENTRY_TYPE from "../../../database/keys";
+
 // Helper functions
 import { getCurrentDate as currentDate } from "../../Utility/utility";
-
-const ENTRY_TYPE = {
-    INCOME: "income",
-    EXPENSE: "expense",
-};
 
 function Entry(props) {
     console.log({ ...props });
@@ -52,7 +50,7 @@ function Entry(props) {
     };
     const submitHandler = (event) => {
         event.preventDefault();
-        const data = { type: entryType, title, amount, date };
+        const data = { type: entryType, title, amount: Number.parseFloat(amount).toFixed(2), date };
         firebase
             .addEntry(data, collection)
             .then(() => resetStates())

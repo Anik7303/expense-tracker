@@ -2,6 +2,12 @@ import app from "firebase/app";
 import "firebase/auth";
 import "firebase/database";
 
+// Keys
+import * as databaseKeys from "./keys";
+
+// Helper Functions
+import { toList, addEntryToColInfo } from "../components/Utility/utility";
+
 const config = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,
@@ -11,12 +17,6 @@ const config = {
     messagingSenderId: process.env.REACT_APP_FIREBASE_MESSAGING_SENDER_ID,
     appId: process.env.REACT_APP_FIREBASE_APP_ID,
     measurementId: process.env.REACT_APP_FIREBASE_MEASUREMENT_ID,
-};
-
-const databaseKeys = {
-    DEFAULT: "default",
-    USERS: "users",
-    COLLECTIONS: "collections",
 };
 
 class Firebase {
@@ -56,9 +56,16 @@ class Firebase {
             .child(uid)
             .child(databaseKeys.COLLECTIONS)
             .push().key;
+        const data = {
+            name: name,
+            income: "0.00",
+            expense: "0.00",
+            createdAt: new Date().getTime(),
+        };
         const updates = {};
 
         updates[`/${databaseKeys.USERS}/${uid}/${databaseKeys.COLLECTIONS}/${key}/`] = name;
+        updates[`/${databaseKeys.COLLECTIONS}/${uid}/${key}/${databaseKeys.INFO}`] = data;
 
         if (name === databaseKeys.DEFAULT) {
             updates[`/${databaseKeys.USERS}/${uid}/default/`] = key;
@@ -67,24 +74,45 @@ class Firebase {
         return this.ref.update(updates);
     };
 
-    addEntry = (data, collection) => {
+    addEntry = async (data, collectionId) => {
+        const uid = this.getUid();
+        const colInfo = (await this.collectionInfo(collectionId).once("value")).val();
+        const updatedInfo = addEntryToColInfo(colInfo, data);
+
+        return this.ref
+            .child(databaseKeys.COLLECTIONS)
+            .child(uid)
+            .child(collectionId)
+            .child(databaseKeys.ENTRIES)
+            .push()
+            .set(data)
+            .then((result) => {
+                const updateObj = {};
+                console.log({ updatedInfo });
+                updateObj[
+                    `/${databaseKeys.COLLECTIONS}/${uid}/${collectionId}/${databaseKeys.INFO}/`
+                ] = updatedInfo;
+                console.log({ updateObj });
+                return this.ref.update(updateObj);
+            });
+    };
+
+    collectionInfo = (id) => {
         const uid = this.getUid();
         return this.ref
             .child(databaseKeys.COLLECTIONS)
             .child(uid)
-            .child(collection)
-            .push()
-            .set(data);
+            .child(id)
+            .child(databaseKeys.INFO);
     };
 
-    collection = (id) => {
+    collectionEntries = (id) => {
         const uid = this.getUid();
-        return this.ref.child(databaseKeys.COLLECTIONS).child(uid).child(id);
-    };
-
-    collections = () => {
-        const uid = this.getUid();
-        return this.ref.child(databaseKeys.COLLECTIONS).child(uid);
+        return this.ref
+            .child(databaseKeys.COLLECTIONS)
+            .child(uid)
+            .child(id)
+            .child(databaseKeys.ENTRIES);
     };
 
     collectionList = () => {

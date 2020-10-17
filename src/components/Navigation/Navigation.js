@@ -1,6 +1,6 @@
 import React, { Fragment } from "react";
-import { withRouter } from 'react-router-dom';
-import { compose } from 'recompose';
+import { withRouter } from "react-router-dom";
+import { compose } from "recompose";
 
 // Stylesheet
 import "./Navigation.scss";
@@ -8,8 +8,8 @@ import "./Navigation.scss";
 // Components
 import NavigationItem from "./NavigationItem/NavigationItem.js";
 import MakeIcon from "../Utility/MakeIcon/MakeIcon";
-import DropdownMenu from './Dropdown/Dropdown';
-import { withUser } from '../../database/index';
+import DropdownMenu from "./Dropdown/Dropdown";
+import { withUser } from "../../database/index";
 
 // Material-UI Icons
 import {
@@ -19,7 +19,8 @@ import {
     Dashboard as DashboardIcon,
     ExitToApp as ExitToAppIcon,
     FormatListBulleted as ListIcon,
-    Note as NoteIcon
+    Note as NoteIcon,
+    Collections as CollectionsIcon,
 } from "@material-ui/icons";
 import { Avatar } from "@material-ui/core";
 
@@ -34,24 +35,47 @@ function Navigation(props) {
     );
     const protectedRoutes = (
         <Fragment>
-            <DropdownMenu text="New" active={location.pathname.includes('/new', 0)} icon={<MakeIcon icon={AddIcon} />}>
+            <DropdownMenu
+                text="New"
+                active={location.pathname.includes("/new", 0)}
+                icon={<MakeIcon icon={AddIcon} />}
+            >
                 <NavigationItem text="Entry" url="/new/entry" icon={<MakeIcon icon={NoteIcon} />} />
-                <NavigationItem text="Collection" url="/new/collection" icon={<MakeIcon icon={ListIcon} />} />
+                <NavigationItem
+                    text="Collection"
+                    url="/new/collection"
+                    icon={<MakeIcon icon={ListIcon} />}
+                />
             </DropdownMenu>
             <NavigationItem text="Home" url="/" icon={<MakeIcon icon={HomeIcon} />} />
+            <NavigationItem
+                text="Collections"
+                url="/collections"
+                icon={<MakeIcon icon={CollectionsIcon} />}
+            />
             <DropdownMenu text={null} icon={<MakeIcon icon={Avatar} />}>
-                <NavigationItem text="Profile" url="/profile" icon={<MakeIcon icon={PersonIcon} />} />
-                <NavigationItem text="Dashboard" url="/dashboard" icon={<MakeIcon icon={DashboardIcon} />} />
-                <NavigationItem text="Sign Out" url="/signout" icon={<MakeIcon icon={ExitToAppIcon} />} />
+                <NavigationItem
+                    text="Profile"
+                    url="/profile"
+                    icon={<MakeIcon icon={PersonIcon} />}
+                />
+                <NavigationItem
+                    text="Dashboard"
+                    url="/dashboard"
+                    icon={<MakeIcon icon={DashboardIcon} />}
+                />
+                <NavigationItem
+                    text="Sign Out"
+                    url="/signout"
+                    icon={<MakeIcon icon={ExitToAppIcon} />}
+                />
             </DropdownMenu>
         </Fragment>
     );
 
     return (
         <nav className="nav">
-            <ul className="nav__list">
-                { isAuth ? protectedRoutes : unprotectedRoutes }
-            </ul>
+            <ul className="nav__list">{isAuth ? protectedRoutes : unprotectedRoutes}</ul>
         </nav>
     );
 }

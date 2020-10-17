@@ -1,3 +1,5 @@
+import * as databaseKeys from "../../database/keys";
+
 export const getCurrentDate = () => {
     const x = new Date();
 
@@ -21,3 +23,29 @@ export const toList = (obj) =>
     });
 
 export const toCapitalize = (value) => value[0].toUpperCase() + value.substr(1);
+
+export const formatColInfoData = (data) => {
+    const temp = {
+        ...data,
+        income: Number.parseFloat(data.income),
+        expense: Number.parseFloat(data.expense),
+    };
+    console.log({ temp });
+    return { ...temp };
+};
+
+export const addEntryToColInfo = (info, entry) => {
+    const updatedInfo = formatColInfoData(info);
+    const value = Number.parseFloat(entry.amount);
+    switch (entry.type) {
+        case databaseKeys.INCOME:
+            updatedInfo.income = (updatedInfo.income + value).toFixed(2);
+            break;
+        case databaseKeys.EXPENSE:
+            updatedInfo.expense = (updatedInfo.expense + value).toFixed(2);
+            break;
+        default:
+            throw new Error("wrong entry type used");
+    }
+    return { ...updatedInfo };
+};
