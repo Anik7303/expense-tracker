@@ -27,7 +27,7 @@ function Navigation(props) {
     const { isAuth, location } = props;
     const unprotectedRoutes = (
         <Fragment>
-            <NavigationItem text="Home" url="/" />
+            <NavigationItem text="Home" url="/" icon={<MakeIcon icon={HomeIcon} />} />
             <NavigationItem text="Login" url="/login" />
             <NavigationItem text="Sign Up" url="/signup" />
         </Fragment>

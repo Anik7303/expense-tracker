@@ -17,7 +17,9 @@ const withAuthentication = (Component) => {
         state = { user: null };
 
         componentDidMount() {
-            this.listener = this.props.firebase.auth.onAuthStateChanged(user => user ? this.setState({ user }) : this.setState({ user: null }));
+            this.listener = this.props.firebase.auth.onAuthStateChanged((user) =>
+                user ? this.setState({ user }) : this.setState({ user: null })
+            );
         }
 
         componentWillUnmount() {
@@ -26,9 +28,10 @@ const withAuthentication = (Component) => {
 
         signOutHandler = () => {
             this.firebase.signOut();
-        }
+        };
 
         render() {
+            console.log({ ...this.props });
             return (
                 <AuthContext.Provider value={this.state.user}>
                     <Component {...this.props} isAuth={this.state.user !== null} />
@@ -38,7 +41,7 @@ const withAuthentication = (Component) => {
     }
 
     return withFirebase(WithAuthentication);
-}
+};
 
 export default FirebaseContext;
 export { withFirebase, withAuthentication, AuthContext };
