@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 // Stylesheet
 import "./Login.scss";
@@ -13,6 +13,11 @@ function Login(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState(null);
+    const [invalid, setInvalid] = useState(true);
+
+    useEffect(() => {
+        setInvalid(email === "" || password === "");
+    }, [email, password]);
 
     const closeModal = () => {
         setError(null);
@@ -44,7 +49,7 @@ function Login(props) {
     return (
         <section className="section-login">
             <ErrorModal data={error} closeFn={closeModal} />
-            <form className="form" autoComplete="off">
+            <form className="form" autoComplete="off" onSubmit={submitHandler}>
                 <div className="form__group">
                     <input
                         className="form__input"
@@ -74,7 +79,7 @@ function Login(props) {
                     </label>
                 </div>
                 <div className="form__group">
-                    <button className="btn btn__form" onClick={submitHandler}>
+                    <button className="btn btn__form" disabled={invalid}>
                         Login
                     </button>
                 </div>

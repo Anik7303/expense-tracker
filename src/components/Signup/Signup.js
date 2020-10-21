@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 // Stylesheet
 import "./Signup.scss";
@@ -13,7 +13,16 @@ function Signup(props) {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
-    const [invalid, setInvalid] = useState({});
+    const [invalid, setInvalid] = useState(true);
+
+    useEffect(() => {
+        setInvalid(
+            username === "" ||
+                email === "" ||
+                password === "" ||
+                (password !== "" && password.toString() !== confirmPassword.toString())
+        );
+    }, [username, email, password, confirmPassword]);
 
     const closeModal = () => {
         setError(null);
@@ -44,7 +53,7 @@ function Signup(props) {
         let userId = null;
         firebase
             .createUserWithEmailAndPassword(email, password)
-            .then(result => {
+            .then((result) => {
                 userId = result.user.uid;
                 return firebase.setUserInfo(userId, username, email);
             })
@@ -63,7 +72,7 @@ function Signup(props) {
     return (
         <section className="section-signup">
             <ErrorModal data={error} closeFn={closeModal} />
-            <form className="form" autoComplete="off">
+            <form className="form" autoComplete="off" onSubmit={submitHandler}>
                 <div className="form__group">
                     <input
                         className="form__input"
@@ -121,7 +130,7 @@ function Signup(props) {
                     </label>
                 </div>
                 <div className="form__group">
-                    <button className="btn btn__form" onClick={submitHandler}>
+                    <button className="btn btn__form" disabled={invalid}>
                         Sign up
                     </button>
                 </div>

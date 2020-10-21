@@ -6,7 +6,7 @@ import "firebase/database";
 import * as databaseKeys from "./keys";
 
 // Helper Functions
-import { toList, addEntryToColInfo } from "../components/Utility/utility";
+import { addEntryToColInfo } from "../components/Utility/utility";
 
 const config = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,

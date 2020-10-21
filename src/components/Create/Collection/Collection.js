@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import { withRouter } from "react-router-dom";
-import { compose } from "recompose";
 
 // Components
 import ErrorModal from "../../Utility/ErrorModal/ErrorModal";
@@ -58,4 +56,4 @@ function Collection(props) {
     );
 }
 
-export default compose(withRouter, withFirebase)(Collection);
+export default withFirebase(Collection);
