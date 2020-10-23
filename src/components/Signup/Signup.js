@@ -1,14 +1,15 @@
 import React, { useState, useEffect } from "react";
+import { compose } from "recompose";
 
 // Stylesheet
 import "./Signup.scss";
 
 // Components
-import ErrorModal from "../Utility/ErrorModal/ErrorModal";
 import { withFirebase } from "../../database/index";
+import { withError } from "../Error/index";
 
 function Signup(props) {
-    const [error, setError] = useState(null);
+    const { firebase, setError } = props;
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -24,9 +25,6 @@ function Signup(props) {
         );
     }, [username, email, password, confirmPassword]);
 
-    const closeModal = () => {
-        setError(null);
-    };
     const inputChangeHandler = (event) => {
         const { name, value } = event.target;
         switch (name) {
@@ -49,13 +47,11 @@ function Signup(props) {
     const submitHandler = (event) => {
         event.preventDefault();
 
-        const { firebase } = props;
-        let userId = null;
         firebase
             .createUserWithEmailAndPassword(email, password)
             .then((result) => {
-                userId = result.user.uid;
-                return firebase.setUserInfo(userId, username, email);
+                const { uid } = result.user;
+                return firebase.setUserInfo(uid, username, email);
             })
             .then(() => {
                 return firebase.updateProfile({ displayName: username });
@@ -71,7 +67,6 @@ function Signup(props) {
 
     return (
         <section className="section-signup">
-            <ErrorModal data={error} closeFn={closeModal} />
             <form className="form" autoComplete="off" onSubmit={submitHandler}>
                 <div className="form__group">
                     <input
@@ -139,4 +134,4 @@ function Signup(props) {
     );
 }
 
-export default withFirebase(Signup);
+export default compose(withError, withFirebase)(Signup);

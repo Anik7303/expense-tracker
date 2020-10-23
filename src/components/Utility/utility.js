@@ -45,5 +45,5 @@ export const addEntryToColInfo = (info, entry) => {
         default:
             throw new Error("wrong entry type used");
     }
-    return { ...updatedInfo };
+    return { ...updatedInfo, updatedAt: getCurrentDate() };
 };

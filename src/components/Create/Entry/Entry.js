@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { compose } from "recompose";
 
 // Components
 import ErrorModal from "../../Utility/ErrorModal/ErrorModal";
@@ -35,7 +36,7 @@ function Entry(props) {
             .once("value")
             .then((snapshot) => {
                 const list = toList(snapshot.val());
-                const colValue = list.find((item) => item.value === "default");
+                const colValue = list.find((item) => item.value.name === "default");
                 setData(list);
                 setCollection(colValue.key);
                 setIsLoading(false);
@@ -51,8 +52,7 @@ function Entry(props) {
     };
     const submitHandler = (event) => {
         event.preventDefault();
-        const data = { type: entryType, title, amount: amount, date };
-        // const data = { type: entryType, title, amount: Number.parseFloat(amount).toFixed(2), date };
+        const data = { type: entryType, title, amount, date };
         firebase
             .addEntry(data, collection)
             .then(() => resetStates())
@@ -86,7 +86,7 @@ function Entry(props) {
         data &&
         data.map((item) => (
             <option key={item.key} value={item.key}>
-                {toCapitalize(item.value)}
+                {toCapitalize(item.value.name)}
             </option>
         ));
     const formElement = (
@@ -174,4 +174,4 @@ function Entry(props) {
     return <section className="section-create">{isLoading ? loaderElement : formElement}</section>;
 }
 
-export default withError(withFirebase(Entry));
+export default compose(withError, withFirebase)(Entry);

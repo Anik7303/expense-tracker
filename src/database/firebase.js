@@ -58,14 +58,13 @@ class Firebase {
             .push().key;
         const data = {
             name: name,
-            income: "0.00",
-            expense: "0.00",
+            income: 0,
+            expense: 0,
             createdAt: new Date().getTime(),
         };
         const updates = {};
 
-        updates[`/${databaseKeys.USERS}/${uid}/${databaseKeys.COLLECTIONS}/${key}/`] = name;
-        updates[`/${databaseKeys.COLLECTIONS}/${uid}/${key}/${databaseKeys.INFO}`] = data;
+        updates[`/${databaseKeys.USERS}/${uid}/${databaseKeys.COLLECTIONS}/${key}/`] = data;
 
         if (name === databaseKeys.DEFAULT) {
             updates[`/${databaseKeys.USERS}/${uid}/default/`] = key;
@@ -83,13 +82,12 @@ class Firebase {
             .child(databaseKeys.COLLECTIONS)
             .child(uid)
             .child(collectionId)
-            .child(databaseKeys.ENTRIES)
             .push()
             .set(data)
-            .then((result) => {
+            .then(() => {
                 const updateObj = {};
                 updateObj[
-                    `/${databaseKeys.COLLECTIONS}/${uid}/${collectionId}/${databaseKeys.INFO}/`
+                    `/${databaseKeys.USERS}/${uid}/${databaseKeys.COLLECTIONS}/${collectionId}/`
                 ] = updatedInfo;
                 return this.ref.update(updateObj);
             });
@@ -100,22 +98,18 @@ class Firebase {
         return this.ref.child(databaseKeys.COLLECTIONS).child(uid);
     };
 
+    collection = (id) => {
+        const uid = this.getUid();
+        return this.ref.child(databaseKeys.COLLECTIONS).child(uid).child(id);
+    };
+
     collectionInfo = (id) => {
         const uid = this.getUid();
         return this.ref
-            .child(databaseKeys.COLLECTIONS)
+            .child(databaseKeys.USERS)
             .child(uid)
-            .child(id)
-            .child(databaseKeys.INFO);
-    };
-
-    collectionEntries = (id) => {
-        const uid = this.getUid();
-        return this.ref
             .child(databaseKeys.COLLECTIONS)
-            .child(uid)
-            .child(id)
-            .child(databaseKeys.ENTRIES);
+            .child(id);
     };
 
     collectionList = () => {
