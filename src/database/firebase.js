@@ -88,13 +88,16 @@ class Firebase {
             .set(data)
             .then((result) => {
                 const updateObj = {};
-                console.log({ updatedInfo });
                 updateObj[
                     `/${databaseKeys.COLLECTIONS}/${uid}/${collectionId}/${databaseKeys.INFO}/`
                 ] = updatedInfo;
-                console.log({ updateObj });
                 return this.ref.update(updateObj);
             });
+    };
+
+    collections = () => {
+        const uid = this.getUid();
+        return this.ref.child(databaseKeys.COLLECTIONS).child(uid);
     };
 
     collectionInfo = (id) => {

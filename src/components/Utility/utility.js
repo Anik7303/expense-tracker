@@ -1,7 +1,6 @@
 import * as databaseKeys from "../../database/keys";
 
 const addLeadingZero = (value) => {
-    console.log({ value });
     return value < 10 ? `0${value}` : value.toString();
 };
 
@@ -27,22 +26,21 @@ export const toCapitalize = (value) => value[0].toUpperCase() + value.substr(1);
 export const formatColInfoData = (data) => {
     const temp = {
         ...data,
-        income: Number.parseFloat(data.income),
-        expense: Number.parseFloat(data.expense),
+        income: Number.parseInt(data.income),
+        expense: Number.parseInt(data.expense),
     };
-    console.log({ temp });
     return { ...temp };
 };
 
 export const addEntryToColInfo = (info, entry) => {
     const updatedInfo = formatColInfoData(info);
-    const value = Number.parseFloat(entry.amount);
+    const value = Number.parseInt(entry.amount);
     switch (entry.type) {
         case databaseKeys.INCOME:
-            updatedInfo.income = (updatedInfo.income + value).toFixed(2);
+            updatedInfo.income = updatedInfo.income + value;
             break;
         case databaseKeys.EXPENSE:
-            updatedInfo.expense = (updatedInfo.expense + value).toFixed(2);
+            updatedInfo.expense = updatedInfo.expense + value;
             break;
         default:
             throw new Error("wrong entry type used");

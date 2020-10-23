@@ -15,6 +15,7 @@ import Home from "../Home/Home";
 import Collections from "../Collections/Collections";
 import { withAuthentication } from "../../database/index";
 import ErrorModal from "../Utility/ErrorModal/ErrorModal";
+import { ErrorContext } from "../Error/index";
 
 function App(props) {
     console.log({ ...props });
@@ -52,9 +53,11 @@ function App(props) {
     return (
         <div className="container">
             {error && <ErrorModal data={error} closeModal={() => setError(null)} />}
-            <Header />
-            <main className="section-main">{isAuth ? reqAuth : noReqAuth}</main>
-            <Footer />
+            <ErrorContext.Provider value={setError}>
+                <Header />
+                <main className="section-main">{isAuth ? reqAuth : noReqAuth}</main>
+                <Footer />
+            </ErrorContext.Provider>
         </div>
     );
 }

@@ -3,7 +3,9 @@ import React, { useEffect, useState } from "react";
 // Components
 import ErrorModal from "../../Utility/ErrorModal/ErrorModal";
 import { withFirebase } from "../../../database/index";
+import { withError } from "../../Error/index";
 import { toList, toCapitalize } from "../../Utility/utility";
+import Spinner from "../../Utility/Spinner/Spinner";
 
 // Keys
 import * as ENTRY_TYPE from "../../../database/keys";
@@ -14,13 +16,12 @@ import { getCurrentDate as currentDate } from "../../Utility/utility";
 function Entry(props) {
     console.log({ ...props });
 
-    const { firebase } = props;
+    const { firebase, setError } = props;
     const [date, setDate] = useState("");
     const [collection, setCollection] = useState("");
     const [entryType, setEntryType] = useState(ENTRY_TYPE.INCOME);
     const [title, setTitle] = useState("");
     const [amount, setAmount] = useState("");
-    const [error, setError] = useState(null);
     const [data, setData] = useState(null);
     const [isLoading, setIsLoading] = useState(true);
     let invalid = title === "" || amount === "";
@@ -50,14 +51,12 @@ function Entry(props) {
     };
     const submitHandler = (event) => {
         event.preventDefault();
-        const data = { type: entryType, title, amount: Number.parseFloat(amount).toFixed(2), date };
+        const data = { type: entryType, title, amount: amount, date };
+        // const data = { type: entryType, title, amount: Number.parseFloat(amount).toFixed(2), date };
         firebase
             .addEntry(data, collection)
             .then(() => resetStates())
             .catch((error) => setError(error));
-    };
-    const closeModal = () => {
-        setError(null);
     };
     const inputChangeHandler = (event) => {
         const { name, value } = event.target;
@@ -82,7 +81,7 @@ function Entry(props) {
         }
     };
 
-    const loaderElement = <div>Loading...</div>;
+    const loaderElement = <Spinner />;
     const collectionElement =
         data &&
         data.map((item) => (
@@ -172,12 +171,7 @@ function Entry(props) {
         </form>
     );
 
-    return (
-        <section className="section-create">
-            <ErrorModal data={error} closeFn={closeModal} />
-            {isLoading ? loaderElement : formElement}
-        </section>
-    );
+    return <section className="section-create">{isLoading ? loaderElement : formElement}</section>;
 }
 
-export default withFirebase(Entry);
+export default withError(withFirebase(Entry));
