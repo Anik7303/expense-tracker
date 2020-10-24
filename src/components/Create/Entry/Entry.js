@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { compose } from "recompose";
 
 // Components
-import ErrorModal from "../../Utility/ErrorModal/ErrorModal";
 import { withFirebase } from "../../../database/index";
 import { withError } from "../../Error/index";
 import { toList, toCapitalize } from "../../Utility/utility";
@@ -42,7 +41,7 @@ function Entry(props) {
                 setIsLoading(false);
             })
             .catch((error) => setError(error));
-    }, [firebase]);
+    }, [firebase, setError]);
 
     const resetStates = () => {
         setDate(currentDate());
@@ -155,7 +154,7 @@ function Entry(props) {
                     name="amount"
                     id="amount"
                     placeholder="Amount"
-                    step="0.1"
+                    step="1"
                     value={amount}
                     onChange={inputChangeHandler}
                 />

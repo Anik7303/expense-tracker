@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import { compose } from "recompose";
 
 // Stylesheet
@@ -11,10 +11,10 @@ import { withError } from "../Error/index";
 import { toList } from "../Utility/utility";
 import Spinner from "../Utility/Spinner/Spinner";
 
-const INITIAL_STATE = {
-    data: null,
-    loading: false,
-};
+// const INITIAL_STATE = {
+//     data: null,
+//     loading: false,
+// };
 
 function Collections(props) {
     console.log({ ...props });
@@ -23,41 +23,32 @@ function Collections(props) {
     const [loading, setLoading] = useState(false);
     // const [state, setState] = useState({});
 
-    console.log({ data, loading });
-    // console.log({ ...state });
-
     useEffect(() => {
         setLoading(true);
         // setState({ ...state, loading: true });
         firebase
-            .collections()
+            .collectionList()
             .once("value")
             .then((snapshot) => {
                 const list = toList(snapshot.val());
-                console.log({ list });
                 setData(list);
                 setLoading(false);
                 // setState({ ...state, data: list, loading: false });
             })
             .catch((error) => setError(error));
-    }, [firebase]);
+    }, [firebase, setError]);
 
-    const loaderEl = <Spinner />;
     const collectionsEl =
         data &&
         data.map((item) => {
-            return <CollectionItem key={item.key} info={item.value.info} />;
+            return <CollectionItem key={item.key} collection={{ ...item.value, _id: item.key }} />;
         });
-    const returnEl = (
-        <Fragment>
-            <h1 className="heading-1" style={{ textAlign: "center" }}>
-                Collections
-            </h1>
-            <div className="collections-container">{collectionsEl}</div>
-        </Fragment>
-    );
 
-    return <section className="section-collections">{loading ? loaderEl : returnEl}</section>;
+    return (
+        <section className="section-collections">
+            {loading ? <Spinner /> : <div className="collections-container">{collectionsEl}</div>}
+        </section>
+    );
 }
 
 export default compose(withError, withFirebase)(Collections);

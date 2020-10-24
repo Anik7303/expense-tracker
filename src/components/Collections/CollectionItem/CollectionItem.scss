@@ -1,0 +1,109 @@
+%displayFlex {
+    display: flex;
+    flex-flow: row nowrap;
+    align-items: center;
+}
+
+.collection {
+    &:link,
+    &:visited {
+        text-decoration: none;
+        display: grid;
+        grid-template-columns: 1fr minmax(15rem, max-content) minmax(10rem, max-content);
+        background-color: var(--color-secondary);
+        color: var(--color-white);
+        border-radius: 6px;
+        padding: 1.6rem;
+        transition: transform 0.2s ease;
+        cursor: pointer;
+    }
+
+    &:not(:last-child) {
+        margin-bottom: 2rem;
+    }
+
+    &:hover {
+        background-color: var(--color-secondary-light);
+        color: var(--color-black);
+        box-shadow: 0 1rem 4rem var(--shadow-secondary);
+        transform: translateY(-3px);
+    }
+
+    &:active {
+        box-shadow: 0 0.5rem 2rem var(--shadow-secondary);
+        transform: translateY(-1px);
+    }
+
+    &:focus {
+        outline: none;
+    }
+
+    &__description {
+        display: grid;
+        grid-template-rows: min-content 1fr min-content;
+    }
+
+    &__created,
+    &__updated {
+        @extend %displayFlex;
+        font-size: 1.3rem;
+    }
+
+    &__icon {
+        @extend %displayFlex;
+        margin-right: 3px;
+    }
+
+    &__name {
+        text-transform: uppercase;
+        @extend %displayFlex;
+        font-size: 2rem;
+        font-weight: 300;
+        white-space: nowrap;
+    }
+
+    &__total {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: center;
+        justify-content: center;
+        &-amount {
+            border-bottom: 2px solid var(--color-grey-light);
+            padding: 0 1rem;
+            padding-bottom: 0.5rem;
+            font-size: 1.6rem;
+        }
+
+        &-text {
+            font-size: 1.2rem;
+        }
+    }
+
+    &__detail {
+        display: flex;
+        flex-flow: column nowrap;
+        align-items: flex-end;
+        justify-content: space-evenly;
+
+        &-plus,
+        &-minus {
+            display: flex;
+            padding: 0.5rem;
+            width: 100%;
+        }
+
+        &-plus {
+            border: 1px solid var(--color-green);
+            margin-bottom: 0.5rem;
+        }
+
+        &-minus {
+            border: 1px solid var(--color-red);
+        }
+
+        &-amount {
+            margin-left: auto;
+            font-size: 1.4rem;
+        }
+    }
+}

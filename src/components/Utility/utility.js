@@ -1,10 +1,14 @@
 import * as databaseKeys from "../../database/keys";
 
-const addLeadingZero = (value) => {
+export const addLeadingZero = (value) => {
     return value < 10 ? `0${value}` : value.toString();
 };
 
-const formatDate = (date, month, year) => {
+export const addTrailingZeros = (value, count = 2) => {
+    return Number.parseInt(value).toFixed(count);
+};
+
+export const formatDate = (date, month, year) => {
     return `${year}-${addLeadingZero(month)}-${addLeadingZero(date)}`;
 };
 
@@ -23,18 +27,22 @@ export const toList = (obj) =>
 
 export const toCapitalize = (value) => value[0].toUpperCase() + value.substr(1);
 
+export const toAbs = (value) => {
+    return value > 0 ? value : value * -1;
+};
+
 export const formatColInfoData = (data) => {
     const temp = {
         ...data,
-        income: Number.parseInt(data.income),
-        expense: Number.parseInt(data.expense),
+        income: toAbs(Number.parseInt(data.income)),
+        expense: toAbs(Number.parseInt(data.expense)),
     };
     return { ...temp };
 };
 
 export const addEntryToColInfo = (info, entry) => {
     const updatedInfo = formatColInfoData(info);
-    const value = Number.parseInt(entry.amount);
+    const value = toAbs(Number.parseInt(entry.amount));
     switch (entry.type) {
         case databaseKeys.INCOME:
             updatedInfo.income = updatedInfo.income + value;
@@ -45,5 +53,9 @@ export const addEntryToColInfo = (info, entry) => {
         default:
             throw new Error("wrong entry type used");
     }
-    return { ...updatedInfo, updatedAt: getCurrentDate() };
+    return { ...updatedInfo, updatedAt: new Date().getTime() };
+};
+
+export const addNumbers = (...numbers) => {
+    return numbers.reduce((sum, val) => sum + Number.parseInt(val), 0);
 };
