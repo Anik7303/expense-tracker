@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { compose } from "recompose";
+import { Helmet } from "react-helmet-async";
 
 // Components
 import { withFirebase } from "../../../database/index";
@@ -170,7 +171,14 @@ function Entry(props) {
         </form>
     );
 
-    return <section className="section-create">{isLoading ? loaderElement : formElement}</section>;
+    return (
+        <section className="section-create">
+            <Helmet>
+                <title>New Entry | Expense Tracker</title>
+            </Helmet>
+            {isLoading ? loaderElement : formElement}
+        </section>
+    );
 }
 
 export default compose(withError, withFirebase)(Entry);

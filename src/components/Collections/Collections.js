@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { compose } from "recompose";
+import { Helmet } from "react-helmet-async";
 
 // Stylesheet
 import "./Collections.scss";
@@ -7,9 +8,9 @@ import "./Collections.scss";
 // Components
 import CollectionItem from "./CollectionItem/CollectionItem";
 import { withFirebase } from "../../database/index";
-import { withError } from "../Error/index";
 import { toList } from "../Utility/utility";
 import Spinner from "../Utility/Spinner/Spinner";
+import { withError } from "../Error/index";
 
 // const INITIAL_STATE = {
 //     data: null,
@@ -18,6 +19,7 @@ import Spinner from "../Utility/Spinner/Spinner";
 
 function Collections(props) {
     console.log({ ...props });
+
     const { firebase, setError } = props;
     const [data, setData] = useState(null);
     const [loading, setLoading] = useState(false);
@@ -46,6 +48,9 @@ function Collections(props) {
 
     return (
         <section className="section-collections">
+            <Helmet>
+                <title>Collections | Expense Tracker</title>
+            </Helmet>
             {loading ? <Spinner /> : <div className="collections-container">{collectionsEl}</div>}
         </section>
     );

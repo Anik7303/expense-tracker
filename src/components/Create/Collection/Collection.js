@@ -1,28 +1,23 @@
 import React, { useState } from "react";
+import { compose } from "recompose";
+import { Helmet } from "react-helmet-async";
 
 // Components
-import ErrorModal from "../../Utility/ErrorModal/ErrorModal";
+import { withError } from "../../Error/index";
 import { withFirebase } from "../../../database/index";
 
 function Collection(props) {
     console.log({ ...props });
-    const [error, setError] = useState(null);
-    const [name, setName] = useState("");
-    const [invalid, setInvalid] = useState(true);
 
-    const inputChangeHandler = (event) => {
-        const { value } = event.target;
-        setName(value);
-        setInvalid(value === "");
-    };
+    const [name, setName] = useState("");
 
     const submitHandler = (event) => {
         event.preventDefault();
-        const { firebase, history } = props;
+
+        const { firebase, history, setError } = props;
         firebase
             .addCollection(name)
-            .then((result) => {
-                console.log({ result });
+            .then(() => {
                 history.push("/collections");
             })
             .catch((error) => setError(error));
@@ -30,7 +25,9 @@ function Collection(props) {
 
     return (
         <section className="section-create">
-            <ErrorModal data={error} closeFn={() => setError(null)} />
+            <Helmet>
+                <title>New Collection | Expense Tracker</title>
+            </Helmet>
             <form className="form" autoComplete="off" onSubmit={submitHandler}>
                 <div className="form__group">
                     <input
@@ -40,14 +37,14 @@ function Collection(props) {
                         id="name"
                         placeholder="Collection Name"
                         value={name}
-                        onChange={inputChangeHandler}
+                        onChange={(event) => setName(event.target.value)}
                     />
                     <label className="form__label" htmlFor="title">
                         Collection Name
                     </label>
                 </div>
                 <div className="form__group">
-                    <button disabled={invalid} className="btn btn__form">
+                    <button disabled={name === ""} className="btn btn__form">
                         Add
                     </button>
                 </div>
@@ -56,4 +53,4 @@ function Collection(props) {
     );
 }
 
-export default withFirebase(Collection);
+export default compose(withError, withFirebase)(Collection);

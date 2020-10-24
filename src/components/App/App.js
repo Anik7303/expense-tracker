@@ -1,6 +1,5 @@
 import React, { useState } from "react";
-import { Switch, Route, Redirect, withRouter } from "react-router-dom";
-import { compose } from "recompose";
+import { Switch, Route, Redirect, useHistory } from "react-router-dom";
 
 // Stylesheet
 import "./App.scss";
@@ -13,14 +12,16 @@ import Login from "../Login/Login";
 import Signup from "../Signup/Signup";
 import Home from "../Home/Home";
 import Collections from "../Collections/Collections";
+import CollectionDetail from "../CollectionDetail/CollectionDetail";
 import { withAuthentication } from "../../database/index";
-import ErrorModal from "../Utility/ErrorModal/ErrorModal";
 import { ErrorContext } from "../Error/index";
+import ErrorModal from "../Utility/ErrorModal/ErrorModal";
 
 function App(props) {
     console.log({ ...props });
     const [error, setError] = useState(null);
     const { firebase, isAuth } = props;
+    const history = useHistory();
 
     const reqAuth = (
         <Switch>
@@ -28,6 +29,7 @@ function App(props) {
             <Route exact path={"/new/entry"} component={Entry} />
             <Route exact path={"/new/collection"} component={Collection} />
             <Route exact path={"/collections"} component={Collections} />
+            <Route path={"/collection/:collectionId"} component={CollectionDetail} />
             <Route exact path={"/signout"} render={() => signOutHandler()} />
             <Redirect to="/" />
         </Switch>
@@ -45,14 +47,14 @@ function App(props) {
         firebase
             .signOut()
             .then(() => {
-                props.history.push("/");
+                history.push("/");
             })
             .catch((error) => setError(error));
     };
 
     return (
         <div className="container">
-            {error && <ErrorModal data={error} closeModal={() => setError(null)} />}
+            {error && <ErrorModal data={error} closeFn={() => setError(null)} />}
             <ErrorContext.Provider value={setError}>
                 <Header />
                 <main className="section-main">{isAuth ? reqAuth : noReqAuth}</main>
@@ -62,4 +64,4 @@ function App(props) {
     );
 }
 
-export default compose(withAuthentication, withRouter)(App);
+export default withAuthentication(App);

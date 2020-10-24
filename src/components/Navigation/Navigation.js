@@ -1,6 +1,5 @@
 import React, { Fragment } from "react";
-import { withRouter } from "react-router-dom";
-import { compose } from "recompose";
+import { useLocation } from "react-router-dom";
 
 // Stylesheet
 import "./Navigation.scss";
@@ -21,16 +20,19 @@ import {
     FormatListBulleted as ListIcon,
     Note as NoteIcon,
     Collections as CollectionsIcon,
+    PersonAdd as PersonAddIcon,
 } from "@material-ui/icons";
 import { Avatar } from "@material-ui/core";
 
 function Navigation(props) {
-    const { isAuth, location } = props;
+    const { isAuth } = props;
+    const location = useLocation();
+
     const unprotectedRoutes = (
         <Fragment>
             <NavigationItem text="Home" url="/" icon={<MakeIcon icon={HomeIcon} />} />
-            <NavigationItem text="Login" url="/login" />
-            <NavigationItem text="Sign Up" url="/signup" />
+            <NavigationItem text="Login" url="/login" icon={<MakeIcon icon={PersonIcon} />} />
+            <NavigationItem text="Sign Up" url="/signup" icon={<MakeIcon icon={PersonAddIcon} />} />
         </Fragment>
     );
     const protectedRoutes = (
@@ -80,4 +82,4 @@ function Navigation(props) {
     );
 }
 
-export default compose(withUser, withRouter)(Navigation);
+export default withUser(Navigation);

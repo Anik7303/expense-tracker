@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
+import { HelmetProvider } from "react-helmet-async";
 
 // Stylesheet
 import "./index.css";
@@ -14,7 +15,9 @@ const element = (
     <React.StrictMode>
         <FirebaseContext.Provider value={new Firebase()}>
             <Router basename="/">
-                <App />
+                <HelmetProvider>
+                    <App />
+                </HelmetProvider>
             </Router>
         </FirebaseContext.Provider>
     </React.StrictMode>

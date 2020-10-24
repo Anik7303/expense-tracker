@@ -1,27 +1,21 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
+import { compose } from "recompose";
+import { Helmet } from "react-helmet-async";
 
 // Stylesheet
 import "./Login.scss";
 
 // Components
-import ErrorModal from "../Utility/ErrorModal/ErrorModal";
 import { withFirebase } from "../../database/index";
+import { withError } from "../Error/index";
 
 function Login(props) {
     console.log({ ...props });
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [error, setError] = useState(null);
-    const [invalid, setInvalid] = useState(true);
+    const invalid = email === "" || password === "";
 
-    useEffect(() => {
-        setInvalid(email === "" || password === "");
-    }, [email, password]);
-
-    const closeModal = () => {
-        setError(null);
-    };
     const inputChangeHandler = (event) => {
         const { name, value } = event.target;
         switch (name) {
@@ -37,7 +31,8 @@ function Login(props) {
     };
     const submitHandler = (event) => {
         event.preventDefault();
-        const { firebase, history } = props;
+
+        const { firebase, history, setError } = props;
         firebase
             .signInWithEmailAndPassword(email, password)
             .then(() => {
@@ -48,7 +43,9 @@ function Login(props) {
 
     return (
         <section className="section-login">
-            <ErrorModal data={error} closeFn={closeModal} />
+            <Helmet>
+                <title>Log in | Expense Tracker</title>
+            </Helmet>
             <form className="form" autoComplete="off" onSubmit={submitHandler}>
                 <div className="form__group">
                     <input
@@ -88,4 +85,4 @@ function Login(props) {
     );
 }
 
-export default withFirebase(Login);
+export default compose(withError, withFirebase)(Login);

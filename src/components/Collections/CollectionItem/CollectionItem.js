@@ -12,6 +12,7 @@ import {
     Add as AddIcon,
     Remove as RemoveIcon,
     AccessTime as AccessTimeIcon,
+    Delete as DeleteIcon,
 } from "@material-ui/icons";
 
 // Helper Functions
@@ -32,33 +33,37 @@ function CollectionItem(props) {
     console.log({ ...props });
     const { _id, name, income, expense, createdAt, updatedAt } = props.collection;
     return (
-        <Link className="collection" to={`/collection/${_id}`}>
-            <div className="collection__description">
-                <p className="collection__created">
-                    <span className="collection__icon">{<MakeIcon icon={AccessTimeIcon} />}</span>
+        <Link className="collection-item" to={`/collection/${_id}`}>
+            <div className="collection-item__description">
+                <p className="collection-item__created">
+                    <span className="collection-item__icon">
+                        {<MakeIcon icon={AccessTimeIcon} />}
+                    </span>
                     {getLocaleDate(createdAt)}
                 </p>
-                <p className="collection__name">{toCapitalize(name)}</p>
+                <p className="collection-item__name">{toCapitalize(name)}</p>
                 {updatedAt && (
-                    <p className="collection__updated">Last modified: {getLocaleDate(updatedAt)}</p>
+                    <p className="collection-item__updated">
+                        Last modified: {getLocaleDate(updatedAt)}
+                    </p>
                 )}
             </div>
-            <div className="collection__total">
-                <span className="collection__total-amount">
+            <div className="collection-item__total">
+                <span className="collection-item__total-amount">
                     BDT {addTrailingZeros(getTotal(income, expense))}
                 </span>
-                <span className="collection__total-text">Total</span>
+                <span className="collection-item__total-text">Total</span>
             </div>
-            <div className="collection__detail">
-                <p className="collection__detail-plus">
-                    <span className="collection__icon">{<MakeIcon icon={AddIcon} />}</span>
-                    <span className="collection__detail-amount">
+            <div className="collection-item__detail">
+                <p className="collection-item__detail-plus">
+                    <span className="collection-item__icon">{<MakeIcon icon={AddIcon} />}</span>
+                    <span className="collection-item__detail-amount">
                         BDT {addTrailingZeros(income)}
                     </span>
                 </p>
-                <p className="collection__detail-minus">
-                    <span className="collection__icon">{<MakeIcon icon={RemoveIcon} />}</span>
-                    <span className="collection__detail-amount">
+                <p className="collection-item__detail-minus">
+                    <span className="collection-item__icon">{<MakeIcon icon={RemoveIcon} />}</span>
+                    <span className="collection-item__detail-amount">
                         BDT {addTrailingZeros(expense)}
                     </span>
                 </p>

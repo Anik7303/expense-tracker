@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { compose } from "recompose";
+import { Helmet } from "react-helmet-async";
 
 // Stylesheet
 import "./Signup.scss";
@@ -9,7 +10,6 @@ import { withFirebase } from "../../database/index";
 import { withError } from "../Error/index";
 
 function Signup(props) {
-    const { firebase, setError } = props;
     const [username, setUsername] = useState("");
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
@@ -47,6 +47,7 @@ function Signup(props) {
     const submitHandler = (event) => {
         event.preventDefault();
 
+        const { firebase, setError } = props;
         firebase
             .createUserWithEmailAndPassword(email, password)
             .then((result) => {
@@ -67,6 +68,9 @@ function Signup(props) {
 
     return (
         <section className="section-signup">
+            <Helmet>
+                <title>Sign up with us | Expense Tracker</title>
+            </Helmet>
             <form className="form" autoComplete="off" onSubmit={submitHandler}>
                 <div className="form__group">
                     <input
