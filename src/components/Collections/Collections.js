@@ -32,8 +32,11 @@ function Collections(props) {
             .collectionList()
             .once("value")
             .then((snapshot) => {
-                const list = toList(snapshot.val());
-                setData(list);
+                const temp = { ...snapshot.val() };
+                if (temp) {
+                    const list = toList(temp);
+                    setData(list);
+                }
                 setLoading(false);
                 // setState({ ...state, data: list, loading: false });
             })

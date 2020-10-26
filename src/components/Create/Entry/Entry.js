@@ -35,10 +35,13 @@ function Entry(props) {
             .collectionList()
             .once("value")
             .then((snapshot) => {
-                const list = toList(snapshot.val());
-                const colValue = list.find((item) => item.value.name === "default");
-                setData(list);
-                setCollection(colValue.key);
+                const temp = { ...snapshot.val() };
+                if (temp) {
+                    const list = toList(temp);
+                    const colValue = list.find((item) => item.value.name === "default");
+                    setData(list);
+                    setCollection(colValue.key);
+                }
                 setIsLoading(false);
             })
             .catch((error) => setError(error));

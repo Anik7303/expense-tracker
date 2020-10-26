@@ -32,9 +32,13 @@ function CollectionDetail(props) {
             .collection(id)
             .once("value")
             .then((result) => {
-                const list = toList(result.val());
-                console.log({ list });
-                setData(list);
+                const temp = { ...result.val() };
+                console.log({ temp });
+                if (temp) {
+                    const list = toList(temp);
+                    console.log({ list });
+                    setData(list);
+                }
             })
             .catch((error) => setError(error));
 
@@ -42,7 +46,10 @@ function CollectionDetail(props) {
             .collectionInfo(id)
             .once("value")
             .then((result) => {
-                setCollection(result.val());
+                const temp = result.val();
+                if (temp) {
+                    setCollection(result.val());
+                }
                 setLoading(false);
             })
             .catch((error) => setError(error));

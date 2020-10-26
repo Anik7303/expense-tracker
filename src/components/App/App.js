@@ -41,8 +41,7 @@ function App(props) {
             <Route exact path="/" component={Home} />
             <Route exact path={"/login"} component={Login} />
             <Route exact path={"/signup"} component={Signup} />
-            <Route path="*" component={NotFound} />
-            <Redirect to="/" />
+            <Redirect to="/login" />
         </Switch>
     );
 

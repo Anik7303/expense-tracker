@@ -18,6 +18,7 @@ import { addTrailingZeros, getLocaleDate, getTotal } from "../../Utility/utility
 
 function CollectionDetailHeader(props) {
     const { name, createdAt, updatedAt, income, expense } = props.collection;
+    console.log({ name, createdAt, updatedAt, income, expense });
     return (
         <div className="collection__header">
             <span className="collection__created-at">
@@ -28,7 +29,7 @@ function CollectionDetailHeader(props) {
             <span className="collection__updated-at">
                 Last modified:
                 <span className="collection__icon">{<MakeIcon icon={AccessTimeIcon} />}</span>
-                {getLocaleDate(updatedAt)}
+                {updatedAt && getLocaleDate(updatedAt)}
             </span>
             <div className="collection__total">
                 <span className="collection__total-amount">
