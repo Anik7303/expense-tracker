@@ -59,3 +59,14 @@ export const addEntryToColInfo = (info, entry) => {
 export const addNumbers = (...numbers) => {
     return numbers.reduce((sum, val) => sum + Number.parseInt(val), 0);
 };
+
+export const getLocaleDate = (millisecond) => {
+    const temp = new Date(millisecond);
+    return millisecond ? `${temp.toLocaleDateString()} ${temp.toLocaleTimeString()}` : null;
+};
+
+export const getTotal = (income, expense) => {
+    const x = Number.parseInt(income);
+    const y = Number.parseInt(expense);
+    return x - y;
+};

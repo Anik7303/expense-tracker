@@ -16,6 +16,7 @@ import CollectionDetail from "../CollectionDetail/CollectionDetail";
 import { withAuthentication } from "../../database/index";
 import { ErrorContext } from "../Error/index";
 import ErrorModal from "../Utility/ErrorModal/ErrorModal";
+import NotFound from "../NotFound/NotFound";
 
 function App(props) {
     console.log({ ...props });
@@ -29,8 +30,9 @@ function App(props) {
             <Route exact path={"/new/entry"} component={Entry} />
             <Route exact path={"/new/collection"} component={Collection} />
             <Route exact path={"/collections"} component={Collections} />
-            <Route path={"/collection/:collectionId"} component={CollectionDetail} />
+            <Route path={"/collection/:id"} component={CollectionDetail} />
             <Route exact path={"/signout"} render={() => signOutHandler()} />
+            <Route path="*" component={NotFound} />
             <Redirect to="/" />
         </Switch>
     );
@@ -39,6 +41,7 @@ function App(props) {
             <Route exact path="/" component={Home} />
             <Route exact path={"/login"} component={Login} />
             <Route exact path={"/signup"} component={Signup} />
+            <Route path="*" component={NotFound} />
             <Redirect to="/" />
         </Switch>
     );

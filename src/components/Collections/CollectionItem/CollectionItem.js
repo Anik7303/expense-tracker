@@ -16,18 +16,7 @@ import {
 } from "@material-ui/icons";
 
 // Helper Functions
-import { toCapitalize, addTrailingZeros } from "../../Utility/utility";
-
-function getLocaleDate(millisecond) {
-    const temp = new Date(millisecond);
-    return millisecond ? `${temp.toLocaleDateString()} ${temp.toLocaleTimeString()}` : null;
-}
-
-function getTotal(income, expense) {
-    const x = Number.parseInt(income);
-    const y = Number.parseInt(expense);
-    return x - y;
-}
+import { toCapitalize, addTrailingZeros, getLocaleDate, getTotal } from "../../Utility/utility";
 
 function CollectionItem(props) {
     console.log({ ...props });

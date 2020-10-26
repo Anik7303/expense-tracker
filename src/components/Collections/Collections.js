@@ -51,7 +51,7 @@ function Collections(props) {
             <Helmet>
                 <title>Collections | Expense Tracker</title>
             </Helmet>
-            {loading ? <Spinner /> : <div className="collections-container">{collectionsEl}</div>}
+            {loading ? <Spinner /> : <div className="collection-list">{collectionsEl}</div>}
         </section>
     );
 }
